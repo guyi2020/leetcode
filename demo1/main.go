@@ -25,21 +25,20 @@ import (
 
 func twoSum(nums []int, target int) []int {
 	// 1. 暴力解法
-	var res = []int{-1, -1}
-	for i, num := range nums {
-		for j, n := range nums {
-			if((num + n) == target) {
-				res[0] = i
-				res[1] = j
+	var len = len(nums)
+	for i := 0; i < len; i++ {
+		for j := i + 1; j < len; j++ {
+			if nums[i] + nums[j] == target {
+				return []int{i, j}
 			}
 		}
 	}
-	return res
+	return nil
 }
 
 func main() {
 	var nums = []int{2, 7, 11, 15}
-	var target = 9
+	var target = 18
 	var res []int = twoSum(nums, target)
 	fmt.Println(res)
 }
