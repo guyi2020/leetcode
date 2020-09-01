@@ -23,8 +23,8 @@ import (
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 */
 
+// 1. 暴力解法
 func twoSum(nums []int, target int) []int {
-	// 1. 暴力解法
 	var len = len(nums)
 	for i := 0; i < len; i++ {
 		for j := i + 1; j < len; j++ {
@@ -36,9 +36,23 @@ func twoSum(nums []int, target int) []int {
 	return nil
 }
 
+// 2. map, 以空间换时间
+func twoSum2(nums []int, target int) []int {
+	m := map[int]int{}
+	for i, num := range nums {
+		if k, ok := m[target - num]; ok{
+			return []int{k, i}
+		}
+		m[num] = i
+	}
+	return nil
+}
+
 func main() {
 	var nums = []int{2, 7, 11, 15}
 	var target = 18
 	var res []int = twoSum(nums, target)
 	fmt.Println(res)
+	var res2 []int = twoSum2(nums, target)
+	fmt.Println(res2)
 }
