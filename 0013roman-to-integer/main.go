@@ -2,104 +2,79 @@ package main
 
 import "fmt"
 
-func romanToInt(s string) int {
-
-	/*
-		I             1
-		V             5
-		X             10
-		L             50
-		C             100
-		D             500
-		M             1000
-	*/
-
-	num := 0
-	slen := len(s)
-
-	for i := 0; i < slen; i++ {
-		switch string(s[i]) {
-		case "M":
-			num += 1000
-			break
-		case "D":
-			num += 500
-			break
-		case "C":
-			if i+1 < slen && (string(string(s[i+1])) == "M" || string(s[i+1]) == "D") {
-				num -= 100
-			} else {
-				num += 100
-			}
-			break
-		case "L":
-			num += 50
-			break
-		case "X":
-			if i+1 < slen && (string(s[i+1]) == "L" || string(s[i+1]) == "C") {
-				num -= 10
-			} else {
-				num += 10
-			}
-			break
-		case "V":
-			num += 5
-			break
-		case "I":
-			if i+1 < slen && (string(s[i+1]) == "V" || string(s[i+1]) == "X") {
-				num -= 1
-			} else {
-				num += 1
-			}
-			break
-		}
-	}
-	return num
-}
-
-// func test(s string) int {
-// 	dict := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-// 	list := []string{"CM", "CD", "XC", "XL", "IX", "IV"}
-// 	res, i := 0, 0
-
-// 	for {
-// 		if _, ok := list[s[i]+s[i+1]]; ok {
-// 			res += dict[s[i]+s[i+1]]
-// 			i += 2
-// 		} else {
-// 			res += dict[s[i]]
-// 			res += 1
-// 		}
-// 		if i < len(s)-1 {
-// 			break
-// 		}
-// 	}
-
-// 	return 1
-// }
-
-// 如果当前字符代表的数字小于下一个字符代表的数字，则做减法，反之加法
 func roman(s string) int {
 
 	dict := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-	slen := len(s)
+	stolen := len(s)
 	ans := 0
-	
-
-	for i := 0; i < slen-1; i++ {
+	for i := 0; i < stolen-1; i++ {
 		if dict[s[i]] >= dict[s[i+1]] {
 			ans += dict[s[i]]
 		} else {
 			ans -= dict[s[i]]
 		}
 	}
-	// 最右边的数字
-	ans += dict[s[slen-1]]
+	ans += dict[s[stolen-1]]
 	return ans
 }
 
+
+func romanToInt(s string) int {
+	strArr := []rune(s)
+	result := 0
+
+	//临时数
+	temp := 0
+	temp1 := 0
+	temp2 := 0
+	for i := 0; i < len(strArr); i++ {
+		switch strArr[i] {
+
+		case 'M':
+			if temp > 0 {
+				result -= temp
+				temp = 0
+			}
+			result += 1000
+		case 'D':
+			if temp > 0 {
+				result -= temp
+				temp = 0
+			}
+			result += 500
+		case 'C':
+			if temp1 > 0 {
+				result -= temp1
+				temp1 = 0
+			}
+			temp += 100
+		case 'L':
+			if temp1 > 0 {
+				result -= temp1
+				temp1 = 0
+			}
+			result += 50
+		case 'X':
+			if temp2 > 0 {
+				result -= temp2
+				temp2 = 0
+			}
+			temp1 += 10
+		case 'V':
+			if temp2 > 0 {
+				result -= temp2
+				temp2 = 0
+			}
+			result += 5
+		case 'I':
+			temp2++
+		}
+	}
+
+	return result + temp + temp1 + temp2
+}
+
 func main() {
-	fmt.Println(roman("IX"))
-	// LV:45, VI:4, II:2, 2
-	// fmt.Println(romanToInt("IL"))
+	res := roman("MCMXCIV")
+	fmt.Println(res)
 }
