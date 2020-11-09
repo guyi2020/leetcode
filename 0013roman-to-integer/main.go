@@ -57,27 +57,49 @@ func romanToInt(s string) int {
 	return num
 }
 
-func test(s string) int {
-	dict := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-	list := []string{"CM", "CD", "XC", "XL", "IX", "IV"}
-	res, i := 0, 0
+// func test(s string) int {
+// 	dict := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+// 	list := []string{"CM", "CD", "XC", "XL", "IX", "IV"}
+// 	res, i := 0, 0
 
-	for {
-		if _, ok := list[s[i]+s[i+1]]; ok {
-			res += dict[s[i]+s[i+1]]
-			i += 2
+// 	for {
+// 		if _, ok := list[s[i]+s[i+1]]; ok {
+// 			res += dict[s[i]+s[i+1]]
+// 			i += 2
+// 		} else {
+// 			res += dict[s[i]]
+// 			res += 1
+// 		}
+// 		if i < len(s)-1 {
+// 			break
+// 		}
+// 	}
+
+// 	return 1
+// }
+
+// 如果当前字符代表的数字小于下一个字符代表的数字，则做减法，反之加法
+func roman(s string) int {
+
+	dict := map[byte]int{'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+	slen := len(s)
+	ans := 0
+	
+
+	for i := 0; i < slen-1; i++ {
+		if dict[s[i]] >= dict[s[i+1]] {
+			ans += dict[s[i]]
 		} else {
-			res += dict[s[i]]
-			res += 1
-		}
-		if i < len(s)-1 {
-			break
+			ans -= dict[s[i]]
 		}
 	}
-
-	return 1
+	// 最右边的数字
+	ans += dict[s[slen-1]]
+	return ans
 }
 
 func main() {
-	fmt.Println(romanToInt("IL"))
+	fmt.Println(roman("IX"))
+	// LV:45, VI:4, II:2, 2
+	// fmt.Println(romanToInt("IL"))
 }
