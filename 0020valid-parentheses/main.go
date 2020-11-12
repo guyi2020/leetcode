@@ -3,14 +3,14 @@ package main
 import "fmt"
 
 func isValid(s string) bool {
-	stack := []byte{}
+	stack := make([]byte, 0)
 	for _, v := range s {
-		switch byte(v) {
+		switch v {
 			case '[','{','(':
 				stack = append(stack, byte(v))
 				break
-
 			case ']','}',')':
+				// 防止越界
 				if len(stack) == 0 {
 					return false
 				}
@@ -26,10 +26,7 @@ func isValid(s string) bool {
 				break
 		}
 	}
-	if len(stack) == 0 {
-		return true
-	}
-	return false
+	return len(stack) == 0
 }
 
 func main() {
